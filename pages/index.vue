@@ -1,48 +1,54 @@
 <template>
-  <section class="container">
-    <img src="~assets/img/logo.png" alt="Nuxt.js Logo" class="logo" />
-    <h1 class="title">
-      USERS
-    </h1>
-    <ul class="users">
-      <li v-for="(user, index) in users" :key="index" class="user">
-        <nuxt-link :to="{ name: 'id', params: { id: index }}">
-          {{ user.name }}
-        </nuxt-link>
-      </li>
-    </ul>
-  </section>
+  <div>
+    <button @click="checkout">Buy things</button>
+  </div>
 </template>
-
 <script>
 import axios from '~/plugins/axios'
 
 export default {
-  async asyncData () {
-    let { data } = await axios.get('/api/users')
-    return { users: data }
-  },
-  head () {
+  data () {
     return {
-      title: 'Users'
+      amount: 11057
+    }
+  },
+  methods: {
+    saveOrder (token) {
+      const order = Object.assign({}, token)
+      order.price = this.amount / 100
+      axios.post(
+        '/api/saveOrder',
+        { params: { order: order } },
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(res => {
+          console.log('Ahoy!')
+        })
+        .catch(() => {
+          console.log('Arrrrrrggg!')
+        })
+    },
+    checkout () {
+      // this.$checkout.close()
+      // is also available.
+      this.$checkout.open({
+        image: 'https://i.imgur.com/1PHlmFF.jpg',
+        locale: 'it',
+        currency: 'EUR',
+        name: 'Buy stuff!',
+        description: 'Purchase all in your basket',
+        amount: this.amount,
+        panelLabel: 'Play Roy for {{amount}}',
+        token: (token) => {
+          // handle the token
+          console.log(token)
+          this.saveOrder(token)
+        }
+      })
     }
   }
 }
 </script>
-
-<style scoped>
-.title
-{
-  margin: 30px 0;
-}
-.users
-{
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.user
-{
-  margin: 10px 0;
-}
-</style>

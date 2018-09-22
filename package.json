@@ -16,7 +16,9 @@
     "cross-env": "^5.0.1",
     "express": "^4.15.3",
     "nuxt": "latest",
-    "source-map-support": "^0.4.15"
+    "pg": "^7.4.3",
+    "source-map-support": "^0.4.15",
+    "vue-stripe-checkout": "^1.0.8"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",
