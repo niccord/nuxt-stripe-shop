@@ -7,7 +7,7 @@ module.exports = {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: 'Nuxt.js project' }
+      { hid: 'description', name: 'description', content: 'nuxt-stripe-shop' }
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
@@ -19,7 +19,8 @@ module.exports = {
   css: ['~/assets/css/main.css'],
   plugins: [
     // ssr: false to only include it on client-side
-    { src: '~/plugins/stripeCheckOut.js', ssr: false }
+    { src: '~/plugins/stripeCheckOut.js', ssr: false },
+    { src: '~/plugins/paypalCheckOut.js', ssr: false }
   ],
   /*
   ** Add axios globally

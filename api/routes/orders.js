@@ -10,7 +10,39 @@ const router = Router()
 router.post('/saveOrder', function (req, res, next) {
   if (req && req.body && req.body.params && req.body.params.order) {
     const { order } = req.body.params
-    client.query(`INSERT INTO orders (id, email, price, client_ip, card_brand, card_country, card_cvc_check, card_funding) VALUES ('${order.id}', '${order.email}', ${order.price}, '${order.client_ip}', '${order.card.brand}', '${order.card.country}', '${order.card.cvc_check}', '${order.card.funding}')`)
+    const brand = order.card ? order.card.brand : order.brand
+    const country = order.card ? order.card.country : order.country
+    const cvcCheck = order.card ? order.card.cvc_check : order.cvc_card
+    const funding = order.card ? order.card.funding : order.funding
+
+    let query = `INSERT INTO orders (id, price`
+    let values = `) VALUES ('${order.id}', ${order.price}`
+    if (order.email) {
+      query += ', email'
+      values += `,'${order.email}'`
+    }
+    if (order.client_ip) {
+      query += ', client_ip'
+      values += `, '${order.client_ip}'`
+    }
+    if (brand) {
+      query += ', card_brand'
+      values += `, '${brand}'`
+    }
+    if (country) {
+      query += ', card_country'
+      values += `, '${country}'`
+    }
+    if (cvcCheck) {
+      query += ', card_cvc_check'
+      values += `, '${cvcCheck}'`
+    }
+    if (funding) {
+      query += ', card_funding'
+      values += `, '${funding}'`
+    }
+
+    client.query(query + values + ')')
       .then(() => {
         res.status(200).send('saved')
       })
