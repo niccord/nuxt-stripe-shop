@@ -71,6 +71,8 @@ export default {
       this.amount = Math.ceil(Math.random() * 11057 * 2)
     },
     saveOrder (token) {
+      console.log('Payload')
+      console.log(token)
       const order = Object.assign({}, token)
       order.price = this.amount / 100
       axios.post(
@@ -84,8 +86,9 @@ export default {
         .then(res => {
           console.log('Ahoy!')
         })
-        .catch(() => {
+        .catch(err => {
           console.log('Arrrrrrggg!')
+          console.log(err)
         })
     },
     stripeCheckout () {
